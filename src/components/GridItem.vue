@@ -760,13 +760,15 @@
             },
             tryMakeDraggable: function(){
                 const self = this;
-                if (this.interactObj === null || this.interactObj === undefined) {
-                    this.interactObj = interact(this.$refs.item);
-                    if (!this.useStyleCursor) {
-                        this.interactObj.styleCursor(false);
-                    }
-                }
                 if (this.draggable && !this.static) {
+                    if (this.interactObj === null || this.interactObj === undefined) {
+                        const interact = await import( /* webpackChunkName: "interact-js" */  'interactjs' );
+                        // webpack 4 uses .default @see https://webpack.js.org/guides/code-splitting/
+                        this.interactObj = interact.default(this.$refs.item);
+                        if (!this.useStyleCursor) {
+                            this.interactObj.styleCursor(false);
+                        }
+                    }
                     const opts = {
                         ignoreFrom: this.dragIgnoreFrom,
                         allowFrom: this.dragAllowFrom
@@ -779,21 +781,24 @@
                             self.handleDrag(event);
                         });
                     }
-                } else {
-                    this.interactObj.draggable({
-                        enabled: false
-                    });
                 }
+                // else {
+                //     this.interactObj.draggable({
+                //         enabled: false
+                //     });
+                // }
             },
             tryMakeResizable: function(){
                 const self = this;
-                if (this.interactObj === null || this.interactObj === undefined) {
-                    this.interactObj = interact(this.$refs.item);
-                    if (!this.useStyleCursor) {
-                        this.interactObj.styleCursor(false);
-                    }
-                }
                 if (this.resizable && !this.static) {
+                    if (this.interactObj === null || this.interactObj === undefined) {
+                        const interact = await import( /* webpackChunkName: "interact-js" */  'interactjs' );
+                        // webpack 4 uses .default @see https://webpack.js.org/guides/code-splitting/
+                        this.interactObj = interact.default(this.$refs.item);
+                        if (!this.useStyleCursor) {
+                            this.interactObj.styleCursor(false);
+                        }
+                    }
                     let maximum = this.calcPosition(0,0,this.maxW, this.maxH);
                     let minimum = this.calcPosition(0,0, this.minW, this.minH);
 
@@ -837,11 +842,12 @@
                                 self.handleResize(event);
                             });
                     }
-                } else {
-                    this.interactObj.resizable({
-                        enabled: false
-                    });
                 }
+                // else {
+                //     this.interactObj.resizable({
+                //         enabled: false
+                //     });
+                // }
             },
             autoSize: function() {
                 // ok here we want to calculate if a resize is needed
